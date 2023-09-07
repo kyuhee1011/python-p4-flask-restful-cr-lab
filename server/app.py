@@ -20,14 +20,14 @@ class Plants(Resource):
     def get (self): 
         plants_list = [plant.to_dict() for plant in Plant.query.all()]
         response = make_response(
-            plants_list,
+            jsonify(plants_list),
             200,
         )
 
         return response
     
     def post (self):
-        data =request.get_json
+        data =request.get_json()
         new_plant =Plant(
             name=data["name"],
             image=data["image"],
@@ -44,15 +44,16 @@ class Plants(Resource):
         return response
     # ex like @app.route ('/plants')
 
-    api.add_resource(Plant, '/plants')
+api.add_resource(Plants, '/plants')
 
 class PlantByID(Resource):
     def get(self, id):
-        plant=Plant.query.filter_by (id=id).first().to_dict()
+        plant=Plant.query.filter(Plant.id==id).first().to_dict()
         response =make_response (
             jsonify(plant),
             200,
         )
+        return response
 
 # ex like @app.route ('/plants/<int:id>')
         
